@@ -159,21 +159,23 @@ function comb(){
 }
 
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
- }
 function swap_player_texts_get_cur_player(){
     off_player = document.getElementById("OffensiveText");
     def_player = document.getElementById("DefensiveText");
     tmp=off_player.textContent;
     off_player.textContent = def_player.textContent;
     def_player.textContent = tmp;
-    var context = new AudioContext();
-    var o = context.createOscillator();
-    o.frequency.setTargetAtTime(440, context.currentTime, 0);
-    o.connect(context.destination);
-    o.start(0);      
-    context.suspend();
+    var context1 = new AudioContext();
+    var context2 = new AudioContext();
+    var sound1 = context1.createOscillator();
+    var sound2 = context2.createOscillator();
+    sound1.frequency.setTargetAtTime(440, context1.currentTime, 0);
+    sound2.frequency.setTargetAtTime(440+(Math.floor(Math.random() * 5)-2)*100, context2.currentTime, 0);
+    sound1.connect(context1.destination);
+    sound2.connect(context2.destination);
+    sound1.start(0);    
+    sound2.start(0);    
+    setTimeout(() => { context1.suspend();context2.suspend();  }, 500);  
 }
 function recolor_chopsticks(){
     for(var i=1;i<=10;i++){
