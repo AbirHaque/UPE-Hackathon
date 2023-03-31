@@ -3,11 +3,17 @@ p1r=1;
 p2l=1;
 p2r=1;
 function hitLL(){
-    off_players=swap_player_texts_get_cur_player();
+    off_player=document.getElementById("OffensiveText");
     if (p1l+p2l>10){
-        console.log("Invalid move!");
+        document.getElementById("state").innerHTML="Invalid move!";
+        document.getElementById("state").color="red";
+        return;
     }
-    if (off_player==1){
+    else{
+        document.getElementById("state").innerHTML="";
+    }
+    console.log(off_player.textContent);
+    if (off_player.textContent==1){
         if(p1l+p2l==10){
             p2l=0;
         }
@@ -24,13 +30,19 @@ function hitLL(){
         }
     }
     recolor_chopsticks();
+    swap_player_texts_get_cur_player();
 }
 function hitLR(){
     off_players=swap_player_texts_get_cur_player();
     if (p1l+p2r>10){
-        console.log("Invalid move!");
+        document.getElementById("state").innerHTML="Invalid move!";
+        document.getElementById("state").color="red";
+        return;
     }
-    if (off_player==1){
+    else{
+        document.getElementById("state").innerHTML="";
+    }
+    if (off_player.textContent==1){
         if(p1l+p2r==10){
             p2r=0;
         }
@@ -51,9 +63,14 @@ function hitLR(){
 function hitRR(){
     off_players=swap_player_texts_get_cur_player();
     if (p1r+p2r>10){
-        console.log("Invalid move!");
+        document.getElementById("state").innerHTML="Invalid move!";
+        document.getElementById("state").back="red";
+        return;
     }
-    if (off_player==1){
+    else{
+        document.getElementById("state").innerHTML="";
+    }
+    if (off_player.textContent==1){
         if(p1r+p2r==10){
             p2r=0;
         }
@@ -74,9 +91,14 @@ function hitRR(){
 function hitRL(){
     off_players=swap_player_texts_get_cur_player();
     if (p1r+p2l>10){
-        console.log("Invalid move!");
+        document.getElementById("state").innerHTML="Invalid move!";
+        document.getElementById("state").color="red";
+        return;
     }
-    if (off_player==1){
+    else{
+        document.getElementById("state").innerHTML="";
+    }
+    if (off_player.textContent==1){
         if(p1r+p2l==10){
             p2l=0;
         }
@@ -95,40 +117,89 @@ function hitRL(){
     recolor_chopsticks();
 }
 
+function comb(){
+    off_players=swap_player_texts_get_cur_player();
+    if (off_player.textContent==1){
+        if(p1r!=0 && p1l!=0){
+            document.getElementById("state").innerHTML="Invalid move!";
+            document.getElementById("state").color="red";
+            return;
+        }
+        else{
+            document.getElementById("state").innerHTML="";
+            if(p1r==0){
+                p1r=Math.floor(p1l/2);
+                p1l=p1l-p1r;
+            }
+            else{
+                p1l=Math.floor(p1r/2);
+                p1r=p1r-p1l;
+            }
+        }
+    }
+    else{
+        if(p2r!=0 && p2l!=0){
+            document.getElementById("state").innerHTML="Invalid move!";
+            document.getElementById("state").color="red";
+            return;
+        }
+        else{
+            document.getElementById("state").innerHTML="";
+            if(p2r==0){
+                p2r=Math.floor(p2l/2);
+                p2l=p2l-p2r;
+            }
+            else{
+                p2l=Math.floor(p2r/2);
+                p2r=p2r-p2l;
+            }
+        }
+    }
+    recolor_chopsticks();
+}
+
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+ }
 function swap_player_texts_get_cur_player(){
     off_player = document.getElementById("OffensiveText");
     def_player = document.getElementById("DefensiveText");
-    tmp=off_player.innerHTML
-    off_player.innerHTML = def_player.innerHTML;
-    def_player.innerHTML = tmp;
-    console.log(off_player.innerHTML+"!!!!");
-    return off_player.innerHTML;
+    tmp=off_player.textContent;
+    off_player.textContent = def_player.textContent;
+    def_player.textContent = tmp;
+    var context = new AudioContext();
+    var o = context.createOscillator();
+    o.frequency.setTargetAtTime(440, context.currentTime, 0);
+    o.connect(context.destination);
+    o.start(0);      
+    context.suspend();
 }
 function recolor_chopsticks(){
     for(var i=1;i<=10;i++){
-        if(i<p2l){
-            document.getElementById("OffL"+i).style.color="white";
+        if(i<=p2l){
+            document.getElementById("OffL"+i).style.backgroundColor="white";
         }
         else{
-            document.getElementById("OffL"+i).style.color="black";
+            document.getElementById("OffL"+i).style.backgroundColor="black";
         }
-        if(i<p2r){
-            document.getElementById("OffR"+i).style.color="white";
-        }
-        else{
-            document.getElementById("OffR"+i).style.color="black";
-        }
-        if(i<p1l){
-            document.getElementById("DefL"+i).style.color="white";
+        if(i<=p2r){
+            document.getElementById("OffR"+i).style.backgroundColor="white";
         }
         else{
-            document.getElementById("DefL"+i).style.color="black";
+            document.getElementById("OffR"+i).style.backgroundColor="black";
         }
-        if(i<p1r){
-            document.getElementById("DefR"+i).style.color="white";
+        if(i<=p1l){
+            document.getElementById("DefL"+i).style.backgroundColor="white";
         }
         else{
-            document.getElementById("DefR"+i).style.color="black";
+            document.getElementById("DefL"+i).style.backgroundColor="black";
+        }
+        if(i<=p1r){
+            document.getElementById("DefR"+i).style.backgroundColor="white";
+        }
+        else{
+            document.getElementById("DefR"+i).style.backgroundColor="black";
         }
     }
     console.log(p1l+" "+p1r+" "+p2l+" "+p2r)

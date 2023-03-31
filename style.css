@@ -2,6 +2,7 @@ stick, th, td {
     border: 1px solid black;
     min-width: 10px;
     min-height: 100px;
+    background-color: black;
 }
 space, th, td {
     min-width: 10px;
