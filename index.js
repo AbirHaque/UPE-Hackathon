@@ -3,11 +3,7 @@ p1r=1;
 p2l=1;
 p2r=1;
 function hitLL(){
-    off_player = document.getElementById("OffensiveText");
-    def_player = document.getElementById("DefensiveText");
-    tmp=off_player.innerHtml
-    off_player.innerHtml = def_player.innerHtml;
-    def_player.innerHtml = tmp;
+    off_players=swap_player_texts_get_cur_player();
     if (p1l+p2l>10){
         console.log("Invalid move!");
     }
@@ -102,13 +98,14 @@ function hitRL(){
 function swap_player_texts_get_cur_player(){
     off_player = document.getElementById("OffensiveText");
     def_player = document.getElementById("DefensiveText");
-    tmp=off_player.innerHtml
-    off_player.innerHtml = def_player.innerHtml;
-    def_player.innerHtml = tmp;
-    return off_player.innerHtml;
+    tmp=off_player.innerHTML
+    off_player.innerHTML = def_player.innerHTML;
+    def_player.innerHTML = tmp;
+    console.log(off_player.innerHTML+"!!!!");
+    return off_player.innerHTML;
 }
 function recolor_chopsticks(){
-    for(var i=0;i<5;i++){
+    for(var i=1;i<=10;i++){
         if(i<p2l){
             document.getElementById("OffL"+i).style.color="white";
         }
@@ -134,4 +131,5 @@ function recolor_chopsticks(){
             document.getElementById("DefR"+i).style.color="black";
         }
     }
+    console.log(p1l+" "+p1r+" "+p2l+" "+p2r)
 }
